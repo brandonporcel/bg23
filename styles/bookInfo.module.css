@@ -1,0 +1,9 @@
+.wrapper {
+	/* background-color: red; */
+	/* min-height: 100vw;
+	min-height: calc(100vh - 50px); */
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	padding: 0 50px;
+	height: 650px;
+}
