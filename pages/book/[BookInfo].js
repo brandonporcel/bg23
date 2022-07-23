@@ -121,7 +121,7 @@ export default function BookInfo() {
 													loading="lazy"
 													title={author}
 													src={authorPfp.uri}
-													alt="authorPfp color,porcel"
+													alt={title}
 												/>
 											)}
 										</Item>
