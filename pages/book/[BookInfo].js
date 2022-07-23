@@ -1,63 +1,94 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import bookInfo from '../../styles/bookInfo.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import Head from 'next/head';
+import { useFetch } from '../../hooks/useFetch';
 export default function BookInfo() {
 	const router = useRouter();
-	const [bookData, setBookData] = useState([]);
+	const { BookInfo } = router.query;
+	const [data, loader, error] = useFetch('/api/books/' + BookInfo);
 	const { poster, author, title, review, year, song, songAuthor, songLink } =
-		bookData;
-	useEffect(() => {
-		const a = async () => {
-			try {
-				const res = await fetch(`/api/books/${router.query.BookInfo}`);
-				const data = await res.json();
-				setBookData(data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		a();
-	}, [router.query.BookInfo]);
+		data;
+	const [authorPfp] = useFetch(
+		'https://php-noise.com/noise.php?r=${r}&g=${g}&b=${b}&tiles=${tiles}&tileSize=${tileSize}&borderWidth=${borderWidth}&mode=${mode}&json'
+	);
+
 	return (
-		<div>
-			<div className={bookInfo.wrapper}>
-				<div className="left">
-					<div className="poster">
-						<img src={poster} alt="a" />
-						<div className="infoBook">
-							<h2>{title}</h2>
-							<p>{author}</p>
+		<>
+			<Head>
+				<title>bg23 | {title}</title>
+			</Head>
+			{{ error } === null ? 'Hubo un error con la api' : ''}
+			{loader === false ? (
+				<>
+					<style jsx>{`
+						.authorPfp {
+							height: 130px;
+							width: 100px;
+							padding: 25px;
+							background: url(${authorPfp.uri});
+							position: absolute;
+							bottom: -50px;
+							right: -125px;
+						}
+						.songMemorie::after {
+							content: '';
+							width: 100px;
+							height: 1px;
+							background: url(${authorPfp.uri});
+							display: block;
+							top: 0px;
+							position: absolute;
+						}
+					`}</style>
+					<div className={bookInfo.wrapper}>
+						<div className={bookInfo.left}>
+							<div className={bookInfo.poster}>
+								<img loading="lazy" src={poster} title={title} alt={title} />
+
+								<div className={bookInfo.infoBook}>
+									<h2>{title}</h2>
+									<p>{author}</p>
+								</div>
+								<div className="authorPfp"></div>
+							</div>
 						</div>
-						<div className="author-pfp"></div>
+						<div className={bookInfo.right}>
+							<div className={bookInfo.review}>
+								<p className={bookInfo.reviewText}>{review} </p>
+								<Link href="/">
+									<a>Leer Más</a>
+								</Link>
+								<span className={bookInfo.year}>{year}</span>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div className="right">
-					<div className="review">
-						<p className="review-text">{review} </p>
-						<Link href="/">
-							<a>Leer Más</a>
-						</Link>
-						<div className="year">{year}</div>
-					</div>
-				</div>
-			</div>
-			<footer className="footer-book">
-				<div className="songMemorie">
-					<p className="songMemorie-title">{song}</p>
-					<p className="songMemorie-author">{songAuthor}</p>
-				</div>
-				<div>
-					{songLink === '' ? (
-						'_'
-					) : (
-						<a href={songLink}>
-							<Image src="/play.png" width={24} height={24} alt="play"></Image>
-						</a>
-					)}
-				</div>
-			</footer>
-		</div>
+					<footer className={bookInfo.footerBook}>
+						<div className="songMemorie">
+							<p className={bookInfo.songMemorieTitle}>{song}</p>
+							<p className={bookInfo.songMemorieuthor}>{songAuthor}</p>
+						</div>
+						<div>
+							{songLink === '' ? (
+								'_'
+							) : (
+								<a href={songLink}>
+									<Image
+										loading="lazy"
+										src="/play.png"
+										width={24}
+										height={24}
+										alt="play"
+									></Image>
+								</a>
+							)}
+						</div>
+					</footer>
+				</>
+			) : (
+				'Loading...'
+			)}
+		</>
 	);
 }
