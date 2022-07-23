@@ -1,3 +1,7 @@
+no funciona deploy vercel 
+
+cambiar las <Image/> por <img/> ,,,Image no funciona para local, solo en produccion
+
 ## Instalación
 
 ```bash
