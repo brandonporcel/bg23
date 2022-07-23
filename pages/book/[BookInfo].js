@@ -4,16 +4,29 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 import { useFetch } from '../../hooks/useFetch';
+
+// library lightbox
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
+
 export default function BookInfo() {
 	const router = useRouter();
 	const { BookInfo } = router.query;
 	const [data, loader, error] = useFetch('/api/books/' + BookInfo);
-	const { poster, author, title, review, year, song, songAuthor, songLink } =
-		data;
+	const {
+		poster,
+		author,
+		title,
+		review,
+		year,
+		song,
+		songAuthor,
+		songLink,
+		photos,
+	} = data;
 	const [authorPfp] = useFetch(
 		'https://php-noise.com/noise.php?r=${r}&g=${g}&b=${b}&tiles=${tiles}&tileSize=${tileSize}&borderWidth=${borderWidth}&mode=${mode}&json'
 	);
-
 	return (
 		<>
 			<Head>
@@ -27,10 +40,10 @@ export default function BookInfo() {
 							height: 130px;
 							width: 100px;
 							padding: 25px;
-							background: url(${authorPfp.uri});
+
 							position: absolute;
-							bottom: -50px;
-							right: -125px;
+							bottom: -25px;
+							right: -105px;
 						}
 						.songMemorie::after {
 							content: '';
@@ -41,18 +54,80 @@ export default function BookInfo() {
 							top: 0px;
 							position: absolute;
 						}
+						.hidden-gallery-img {
+							display: none;
+						}
 					`}</style>
+
 					<div className={bookInfo.wrapper}>
 						<div className={bookInfo.left}>
-							<div className={bookInfo.poster}>
-								<img loading="lazy" src={poster} title={title} alt={title} />
-
-								<div className={bookInfo.infoBook}>
-									<h2>{title}</h2>
-									<p>{author}</p>
+							<Gallery>
+								{photos?.map((el, id) => (
+									<Item
+										key={id}
+										original={el.src}
+										thumbnail={el.src}
+										width="720"
+										height="720"
+									>
+										{({ ref, open }) => (
+											<img
+												ref={ref}
+												onClick={open}
+												className="hidden-gallery-img"
+												src={el.src}
+												alt="as"
+												loading="lazy"
+											/>
+										)}
+									</Item>
+								))}
+								{/* {photos?.map((el, id) => (
+									<p key={id}>{el.src}</p>
+								))} */}
+								<div className={bookInfo.poster}>
+									<Item
+										original={poster}
+										thumbnail={poster}
+										width="720"
+										height="720"
+									>
+										{({ ref, open }) => (
+											<img
+												ref={ref}
+												onClick={open}
+												src={poster}
+												loading="lazy"
+												title={title}
+												alt={title}
+											/>
+										)}
+									</Item>
+									<div className={bookInfo.infoBook}>
+										<h2>{title}</h2>
+										<p>{author}</p>
+									</div>
+									<div className="authorPfp">
+										<Item
+											original={authorPfp.uri}
+											thumbnail={authorPfp.uri}
+											width="720"
+											height="720"
+										>
+											{({ ref, open }) => (
+												<img
+													ref={ref}
+													onClick={open}
+													loading="lazy"
+													title={author}
+													src={authorPfp.uri}
+													alt="authorPfp color,porcel"
+												/>
+											)}
+										</Item>
+									</div>
 								</div>
-								<div className="authorPfp"></div>
-							</div>
+							</Gallery>
 						</div>
 						<div className={bookInfo.right}>
 							<div className={bookInfo.review}>
@@ -64,6 +139,7 @@ export default function BookInfo() {
 							</div>
 						</div>
 					</div>
+
 					<footer className={bookInfo.footerBook}>
 						<div className="songMemorie">
 							<p className={bookInfo.songMemorieTitle}>{song}</p>
