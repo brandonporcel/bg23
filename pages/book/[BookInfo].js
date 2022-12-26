@@ -71,7 +71,7 @@ export default function BookInfo() {
 										height="720"
 									>
 										{({ ref, open }) => (
-											<Image
+											<img
 												ref={ref}
 												onClick={open}
 												className="hidden-gallery-img"
@@ -93,7 +93,7 @@ export default function BookInfo() {
 										height="720"
 									>
 										{({ ref, open }) => (
-											<Image
+											<img
 												ref={ref}
 												onClick={open}
 												src={poster}
@@ -115,7 +115,7 @@ export default function BookInfo() {
 											height="720"
 										>
 											{({ ref, open }) => (
-												<Image
+												<img
 													ref={ref}
 													onClick={open}
 													loading="lazy"
@@ -150,13 +150,13 @@ export default function BookInfo() {
 								'_'
 							) : (
 								<a href={songLink}>
-									<Image
+									<img
 										loading="lazy"
 										src="/play.png"
 										width={24}
 										height={24}
 										alt="play"
-									></Image>
+									></img>
 								</a>
 							)}
 						</div>
