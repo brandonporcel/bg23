@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import home from '../styles/home.module.css';
+import home from '../styles/Home.module.css';
 import GalleryImage from '../components/GalleryImage';
 import { useFetch } from '../hooks/useFetch';
 
