@@ -176,5 +176,17 @@ const dbArray = [
 		poster:
 			'https://leeresvivirdosveces.files.wordpress.com/2020/09/4f4c5e48-bca8-429b-a8f5-988f71d93ff4.jpeg?w=640',
 	},
+	{
+		id: 14,
+		title: 'Teoria De La Gravedad',
+		author: 'leila guerriero',
+		song: '-',
+		songLink: 'https://www.youtube.com/watch?v=LWXUdqvVO8Y',
+		songAuthor: '',
+		year: '20219',
+		review: "Me quebré en el pase de Pray You Catch Me, Beyoncé y Somethin' Stupid de Frank y Nancy Sinatra leyendo el texto Quieta en el bondi yendo al laburo",
+		poster:
+			'https://i.pinimg.com/564x/a4/92/ae/a492ae81a93cc1f63be43b80dc080d09.jpg',
+	},
 ];
 export default dbArray;
